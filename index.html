@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not-My-Type</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:  #333;;
+
+            text-align: center;
+            margin: 50px;
+        }
+        
+        h1 {
+            color: #828181;
+            font-size: 24px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        #para {
+            display: inline-block;
+        }
+        .typing-cursor {
+            width: 1px;
+            height: 20px;
+            display: inline-block;
+            background-color: #ffffff;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        span {
+            color: #333;
+        }
+
+
+
+    /* Colours */
+    .btn-secondary-custom {
+      border: 0;
+      border-radius: 5px;
+      color: #1F1A25; /* Dark Grey */
+      font-family: 'Muli', Arial, sans-serif;
+      font-weight: 800; /* Extra Bold */
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      background-color: #FDE74C; /* Yellow */
+      box-shadow: 0 8px darken(#FDE74C, 20%);
+
+      &:hover {
+        cursor: pointer;
+        background-color: darken(#FDE74C, 10%);
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:active {
+        transform: translateY(4px);
+        box-shadow: 0 3px darken(#FDE74C, 20%);
+      }
+    }
+
+
+    #blur-container {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      background: url('your-background-image.jpg') center/cover no-repeat fixed;
+      filter: blur(10px);
+      overflow: hidden;
+    }
+
+    #text-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+    }
+
+    #text {
+      font-size: 3em;
+      font-weight: bold;
+    }
+    #textContentontoblur {
+      display: none;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 35px;
+      z-index: 1; /* Ensure the text is on top of the blur */
+    }
+    </style>
+</head>
+<body>
+    <button class="btn-secondary-custom" id="60sec">60 sec</button>
+    <button class="btn-secondary-custom" id="30sec">30 sec</button>
+    <button class="btn-secondary-custom" id="15sec">15 sec</button>
+    <button class="btn-secondary-custom" id="1sec">1 sec</button>
+    <div id="box" style="margin-top: 25px; border: 2px solid #FDE74C; border-radius: 10px; padding: 15px;">
+
+        <h1 id="time"></h1>
+        <h1 id="textContentontoblur">Hello</h1>
+        <h1 id="para">The quick brown fox jumps over the lazy dog a sly movement of the agile creature as it navigates the terrain rustling leaves chirping birds and the distant murmur of a flowing stream provide the backdrop to this serene scene nature's orchestra playing a gentle melody echoing through the vast expanse of the wilderness each step of the fox leaves a soft imprint on the damp soil blending with the earthy tones of the surroundings the sun casts long shadows as it begins its descent painting the sky with hues of orange and pink twilight envelops the landscape and the nocturnal creatures emerge taking their place in the nocturne of the night</h1>
+    </div>
+
+    <script>
+        
+        // targetDiv.style.backdropFilter = '';
+    var c = 0;
+    var flag2=0;
+    var remainingTime = 0;
+    var d=0;
+    var flag=0;
+    var timer;
+    var dur;
+    function time_type(duration) {
+        // let targetDiv = document.getElementById('box');
+        // var blurOverlay = targetDiv.querySelector('div');
+
+        // if (blurOverlay) {
+        //     targetDiv.removeChild(blurOverlay);
+        // }
+
+        // targetDiv.style.position = '';
+        // targetDiv.style.backdropFilter = '';
+        // targetDiv.style.overflow = '';
+    flag2=0;
+    c = 0;
+    dur = duration
+    remainingTime = duration;
+    var myHeadingElement = document.getElementById("para").textContent;
+    var paraElement = document.getElementById("para");
+    d = 0;
+    var timeElement = document.getElementById("time");
+    clearInterval(timer);
+    var coloredText = "<span style='color: white;'>" + myHeadingElement.substring(0, c) + "</span>";
+        var blinker = "<div class='typing-cursor'></div>";
+        var remainingText = myHeadingElement.substring(c);
+
+        paraElement.innerHTML = coloredText + blinker + remainingText;
+    function startTimer(duration, callback) {
+        updateTimerDisplay();
+        clearInterval(timer);
+
+        timer = setInterval(function () {
+            remainingTime--;
+            updateTimerDisplay();
+
+            if (remainingTime <= 0) {
+                console.log('Timer expired!');
+                callback();
+                clearInterval(timer);
+            }
+        }, 1000);
+    }
+
+    function timerCallback() {
+        var targetDiv = document.getElementById('box');
+
+        targetDiv.style.position = 'relative';
+        targetDiv.style.overflow = 'hidden';
+        var blurOverlay = document.createElement('div');
+        blurOverlay.style.width = '100%';
+        blurOverlay.style.height = '100%';
+        blurOverlay.style.position = 'absolute';
+        blurOverlay.style.top = '0';
+        blurOverlay.style.left = '0';
+        blurOverlay.style.backdropFilter = 'blur(10px)'; // Adjust the blur intensity
+        targetDiv.appendChild(blurOverlay);
+        flag2=1
+        var text_over_blur = document.getElementById("textContentontoblur");
+        console.log(dur)
+        text_over_blur.innerHTML = "Words Per Minute: "+(d*(60/dur));
+        text_over_blur.style.display = "block"
+        console.log(d * (60 / dur));
+    }
+
+    function updateTimerDisplay() {
+        timeElement.textContent = `Time Remaining: ${remainingTime}s`;
+    }
+
+    flag = 0;
+    updateTimerDisplay();
+    document.addEventListener("keydown", function (event) {
+        // if (event.key === "Backspace" && c > 0 && flag2==0) {
+            // c=c-1;
+        // } else 
+        if (event.key === " " && myHeadingElement[c] === " "  && flag2==0) {
+            c++;
+            d++;
+            if (flag === 0) {
+                startTimer(duration, timerCallback);
+                flag = 1;
+            }
+            // console.log(d);
+        } else if (event.key === myHeadingElement[c] && flag2==0) {
+            c++;
+            if (flag === 0) {
+                startTimer(duration, timerCallback);
+                flag = 1;
+            }
+        }
+
+        // console.log(event.key);
+        if (flag2==0){
+
+            var coloredText = "<span style='color: white;'>" + myHeadingElement.substring(0, c) + "</span>";
+            var blinker = "<div class='typing-cursor'></div>";
+            var remainingText = myHeadingElement.substring(c);
+            
+            paraElement.innerHTML = coloredText + blinker + remainingText;
+        }
+    });
+}
+time_type(60);
+document.getElementById("60sec").addEventListener("click", function () {
+    time_type(60);
+});
+
+document.getElementById("30sec").addEventListener("click", function () {
+    time_type(30);
+});
+
+document.getElementById("15sec").addEventListener("click", function () {
+    time_type(15);
+});
+document.getElementById("1sec").addEventListener("click", function () {
+    time_type(1);
+});
+
+    </script>
+</body>
+</html>
